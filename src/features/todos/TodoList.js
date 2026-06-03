@@ -4,9 +4,13 @@ import {
     useDeleteTodoMutation,
     useAddTodoMutation
 } from "../api/apiSlice"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+//import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash, faUpload } from '@fortawesome/free-solid-svg-icons'
+import { library } from '@fortawesome/fontawesome-svg-core'
 import { useState } from "react"
+
+// Add icons to the library
+library.add(faTrash, faUpload)
 
 const TodoList = () => {
     const [newTodo, setNewTodo] = useState('')
@@ -41,7 +45,7 @@ const TodoList = () => {
                 />
             </div>
             <button className="submit">
-                <FontAwesomeIcon icon={faUpload} />
+                {/* <FontAwesomeIcon icon={faUpload} /> */}
             </button>
         </form>
 
@@ -63,13 +67,14 @@ const TodoList = () => {
                         <label htmlFor={todo.id}>{todo.title}</label>
                     </div>
                     <button className="trash" onClick={() => deleteTodo({ id: todo.id })}>
-                        <FontAwesomeIcon icon={faTrash} />
+                       {/*  <FontAwesomeIcon icon={faTrash} /> */}
+                        Delete Todo
                     </button>
                 </article>
             )
         })
     } else if (isError) {
-        content = <p>{error}</p>
+        content = <p>{error?.data?.message || error?.status || 'An error occurred'}</p>
     }
 
     return (
