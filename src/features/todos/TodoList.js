@@ -4,13 +4,7 @@ import {
     useDeleteTodoMutation,
     useAddTodoMutation
 } from "../api/apiSlice"
-//import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrash, faUpload } from '@fortawesome/free-solid-svg-icons'
-import { library } from '@fortawesome/fontawesome-svg-core'
 import { useState } from "react"
-
-// Add icons to the library
-library.add(faTrash, faUpload)
 
 const TodoList = () => {
     const [newTodo, setNewTodo] = useState('')

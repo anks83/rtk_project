@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { selectAllPosts, getPostsStatus, getPostsError, fetchPosts } from './postsSlice';
 import PostExcerpt from './PostExcerpt';
