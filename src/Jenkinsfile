@@ -1,0 +1,59 @@
+pipeline {
+    agent any
+
+         tools {
+          nodejs 'nodejs'
+        }
+        parameters {
+        string(
+            name: 'GIT_URL', 
+            defaultValue: '', 
+            description: 'Enter the Git repository URL (e.g., https://github.com)'
+        )
+        string(
+            name: 'GIT_BRANCH', 
+            defaultValue: 'main', 
+            description: 'Enter the branch name to build'
+        )
+        choice(
+            name: 'AWS_ACCOUNT', 
+            choices: ['development', 'staging', 'production'], 
+            description: 'Select the target AWS environment'
+        )
+    }
+
+    stages {
+        stage('Git Checkout ') {
+            steps {
+                git url:"https://github.com/anks83/rtk_project",branch:"develop"
+            }
+        }
+        stage('NPM Install ') {
+            steps {
+                sh "npm install"
+            }
+        }
+        stage('Create Node Build') {
+            steps {
+                sh "npm run build"
+            }
+        }
+        stage('Debug Environment') {
+                steps {
+                    sh '''
+                         /opt/homebrew/bin/aws --version
+                    '''
+                }
+            }
+        stage('S3 Deploy') {
+            steps {
+                withAWS(region: 'us-east-1', credentials: 'aws') {
+                    //s3Download(file: 'filename', bucket: 's3bucket', path: '', force: true)
+                    sh "/opt/homebrew/bin/aws s3 sync build/ s3://react-project-deployment --delete"
+                }
+            }
+        }
+        
+    
+        }
+    }s
